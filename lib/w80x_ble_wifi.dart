@@ -2,10 +2,14 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:w80x_ble_wifi/BleWifiResult.dart';
 
+import 'BleScanResult.dart';
 import 'BleWifiParams.dart';
 import 'WifiScanResult.dart';
+import 'ble_wifi_dialog.dart';
 
 class W80xBleWifi {
   static const EventChannel _bleScanEvt = EventChannel("cn.espush/bleScan");
@@ -13,17 +17,23 @@ class W80xBleWifi {
   static const EventChannel _bleWiFiEvt = EventChannel("cn.espush/bleWifi");
   static const MethodChannel _wifiScanCh = MethodChannel("cn.espush.command/wifiScan");
 
-  static Stream<dynamic> bleScan() {
+  static Stream<BleScanResult> bleScan() async* {
     var bleScanSink = _bleScanEvt.receiveBroadcastStream();
-    return bleScanSink;
+    await for(var chunk in bleScanSink) {
+      var item = BleScanResult.fromJson(jsonDecode(chunk as String));
+      yield item;
+    }
   }
 
-  static Stream<dynamic> bleWiFi(BleWifiParams params) {
+  static Stream<BleWifiResult> bleWiFi(BleWifiParams params) async* {
     var req = jsonEncode(params.toJson());
 
     var sink = _bleWiFiEvt.receiveBroadcastStream(req);
-    print('submit succeed.');
-    return sink;
+
+    await for(var chunk in sink) {
+      var item = BleWifiResult.fromJson(jsonDecode(chunk as String));
+      yield item;
+    }
   }
 
   static Future<void> stopBleScan() async {
@@ -44,5 +54,17 @@ class W80xBleWifi {
     }
 
     return out;
+  }
+
+  static Future<BleWifiResult> doBleWifi(BuildContext context, BleWifiParams params) {
+    return showDialog<BleWifiResult>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Ble Wifi'),
+            content: BleWifiDialog(params: params),
+          );
+        }
+    );
   }
 }

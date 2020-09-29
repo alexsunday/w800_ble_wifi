@@ -3,6 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:w80x_ble_wifi/WifiScanResult.dart';
 import 'package:w80x_ble_wifi/w80x_ble_wifi.dart';
+import 'package:w80x_ble_wifi/BleWifiParams.dart';
+import 'package:w80x_ble_wifi/BleScanResult.dart';
 
 void showToast(String msg) {
   Fluttertoast.showToast(msg: msg);
@@ -17,6 +19,7 @@ class _MyHomePage extends State<MyHomePage> {
   var _ssid = TextEditingController();
   var _pwd = TextEditingController();
   List<WifiScanResult> mWifiList = [];
+  Set<BleScanResult> mBleList = Set();
 
   Widget buildInputForm() {
 //    _ssid.text = "Chinanet-96c";
@@ -131,8 +134,8 @@ class _MyHomePage extends State<MyHomePage> {
     mWifiList = rs;
   }
 
-  void onBleItemScan(Object key) {
-    //
+  void onBleItemScan(BleScanResult item) {
+    mBleList.add(item);
   }
 
   void bleScan() {
@@ -141,14 +144,23 @@ class _MyHomePage extends State<MyHomePage> {
   }
 
   void stopBleScan() {
+    W80xBleWifi.stopBleScan();
   }
 
   void bleWiFi() {
+    var params = BleWifiParams();
+    W80xBleWifi.bleWiFi(params);
   }
 
+  /// 1. 取出 ssid 与 pwd，如果有 bssid 则也取出
+  /// 2. 权限检查，授权
+  /// 3. 执行方法-弹出配网对话框
   void goOneShot() {
-  }
+    var params = BleWifiParams();
+    params.ssid = _ssid.text;
+    params.password = _pwd.text;
+    // TODO: 加入 bssid
 
-  void ssidSelected(String value) {
+    W80xBleWifi.doBleWifi(context, params);
   }
 }
