@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:w80x_ble_wifi/WifiScanResult.dart';
 import 'package:w80x_ble_wifi/w80x_ble_wifi.dart';
 
 void showToast(String msg) {
@@ -15,6 +16,53 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePage extends State<MyHomePage> {
   var _ssid = TextEditingController();
   var _pwd = TextEditingController();
+  List<WifiScanResult> mWifiList = [];
+
+  Widget buildInputForm() {
+//    _ssid.text = "Chinanet-96c";
+//    _pwd.text = "2zhlmcl1hblsqt";
+
+    _ssid.text = "2208-WiFi";
+    _pwd.text = "12345678";
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+          child: TextField(
+            controller: _ssid,
+            decoration: InputDecoration(
+              labelText: "SSID",
+              suffixIcon: PopupMenuButton<String>(
+                icon: const Icon(Icons.arrow_drop_down),
+                onSelected: (String v) {
+                  _ssid.text = v;
+                },
+                itemBuilder: (BuildContext context) {
+                  return mWifiList.map<PopupMenuItem<String>>((e) {
+                    return PopupMenuItem<String>(
+                      child: Text(e.ssid),
+                    );
+                  }).toList();
+                },
+              )
+            ),
+          )
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+          child: TextField(
+            controller: _pwd,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: "密码"
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +75,7 @@ class _MyHomePage extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: TextField(),
-            ),
+            buildInputForm(),
             RaisedButton(
               child: Text('WiFi搜索'),
               onPressed: wifiScan,
@@ -84,6 +128,7 @@ class _MyHomePage extends State<MyHomePage> {
   Future<void> wifiScan() async {
     var rs = await W80xBleWifi.wifiScan();
     showToast("扫描到wifi热点共 ${rs.length} 个");
+    mWifiList = rs;
   }
 
   void onBleItemScan(Object key) {
@@ -102,5 +147,8 @@ class _MyHomePage extends State<MyHomePage> {
   }
 
   void goOneShot() {
+  }
+
+  void ssidSelected(String value) {
   }
 }
