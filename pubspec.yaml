@@ -2,7 +2,7 @@ name: w80x_ble_wifi
 description: A new flutter plugin project.
 version: 0.0.1
 author:
-homepage:
+homepage: https://light.espush.cn
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -38,6 +38,10 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   #
+
+  assets:
+    - res/refresh.png
+
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
   #

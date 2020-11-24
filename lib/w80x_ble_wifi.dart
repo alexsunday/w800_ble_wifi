@@ -38,6 +38,7 @@ class W80xBleWifi {
 
   static Future<void> stopBleScan() async {
     try {
+      print('stop ble scan.');
       await _stopBleScanCh.invokeMethod("stopBleScan");
     } on PlatformException {
       print("stop ble scan, but recv exception.");
@@ -61,7 +62,7 @@ class W80xBleWifi {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Ble Wifi'),
+            title: Text('网络配置'),
             content: BleWifiDialog(params: params),
           );
         }

@@ -2,6 +2,8 @@ package cn.espush.w80x.blewifi.w80x_ble_wifi
 
 import android.bluetooth.BluetoothDevice
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import com.google.gson.Gson
 import com.winnnermicro.blewifilibrary.BleWiFiCallback
 import com.winnnermicro.blewifilibrary.BleWiFiClient
@@ -65,6 +67,8 @@ class BleWifiHandler(private val context: Context) :EventChannel.StreamHandler, 
     private var mWifiClient: BleWiFiClient? = null
     private val gson = Gson()
 
+    val handler = Handler(Looper.getMainLooper())
+
     override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
         event = events!!
         val args = arguments as String
@@ -111,7 +115,10 @@ class BleWifiHandler(private val context: Context) :EventChannel.StreamHandler, 
     private inner class MyBleWifiCallback: BleWiFiCallback {
         private fun sendEventChannelMsg(msg: BleWifiResult) {
             val data = gson.toJson(msg)
-            context.run {
+//            context.run {
+//                event.success(data)
+//            }
+            handler.post {
                 event.success(data)
             }
             /*

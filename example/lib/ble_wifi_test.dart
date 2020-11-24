@@ -25,7 +25,7 @@ class _MyHomePage extends State<MyHomePage> {
 //    _ssid.text = "Chinanet-96c";
 //    _pwd.text = "2zhlmcl1hblsqt";
 
-    _ssid.text = "2208-WiFi";
+//    _ssid.text = "2208-WiFi";
     _pwd.text = "12345678";
 
     return Column(
@@ -39,15 +39,20 @@ class _MyHomePage extends State<MyHomePage> {
               labelText: "SSID",
               suffixIcon: PopupMenuButton<String>(
                 icon: const Icon(Icons.arrow_drop_down),
-                onSelected: (String v) {
-                  _ssid.text = v;
-                },
                 itemBuilder: (BuildContext context) {
-                  return mWifiList.map<PopupMenuItem<String>>((e) {
+                  return mWifiList.map<PopupMenuEntry<String>>((e) {
                     return PopupMenuItem<String>(
+                      value: e.ssid,
                       child: Text(e.ssid),
                     );
                   }).toList();
+                },
+                onSelected: (String v) {
+                  print("Selected $v");
+                  _ssid.text = v;
+                },
+                onCanceled: () {
+                  print("Canceled...");
                 },
               )
             ),
