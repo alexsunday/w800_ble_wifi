@@ -4,10 +4,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:w80x_ble_wifi/BleWifiResult.dart';
 
 import 'BleScanResult.dart';
 import 'BleWifiParams.dart';
+import 'BleWifiResult.dart';
 import 'WifiScanResult.dart';
 import 'ble_wifi_dialog.dart';
 

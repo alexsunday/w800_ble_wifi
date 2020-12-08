@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:w80x_ble_wifi/WifiScanResult.dart';
-import 'package:w80x_ble_wifi/w80x_ble_wifi.dart';
-import 'package:w80x_ble_wifi/BleWifiParams.dart';
 import 'package:w80x_ble_wifi/BleScanResult.dart';
+import 'package:w80x_ble_wifi/BleWifiParams.dart';
+import 'package:w80x_ble_wifi/w80x_ble_wifi.dart';
 
 void showToast(String msg) {
-  Fluttertoast.showToast(msg: msg);
+  print(msg);
 }
 
 class MyHomePage extends StatefulWidget {

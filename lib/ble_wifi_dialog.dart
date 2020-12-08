@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:w80x_ble_wifi/w80x_ble_wifi.dart';
 
 import 'BleWifiParams.dart';
+import 'w80x_ble_wifi.dart';
 
 class BleWifiDialog extends StatefulWidget {
   final BleWifiParams params;
